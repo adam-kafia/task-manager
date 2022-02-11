@@ -1,3 +1,4 @@
+/* The above code is creating a server. */
 const express = require("express");
 require("./db/mongoose");
 

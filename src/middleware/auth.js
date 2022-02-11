@@ -1,3 +1,5 @@
+/* This code is checking if the user is authenticated. If they are, it will allow them to continue. If
+they are not, it will send a message back to the user. */
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 

@@ -55,12 +55,16 @@ const userSchema = mongoose.Schema(
     }
 );
 
+/* This is a virtual field. It is not a real field in the database. It is a field that is not stored in
+the database but is used to create a relationship between the user and the task. */
 userSchema.virtual("tasks", {
     ref: "Task",
     localField: "_id",
     foreignField: "user",
 });
 
+/* A static method. It is a method that is not attached to an instance of a model. It is attached to
+the model itself. */
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
     if (!user) throw new Error("User not found");
@@ -70,6 +74,8 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 };
 
+/* This is a method that is attached to the userSchema. It is a method that is not attached to an
+instance of a model. It is attached to the model itself. */
 userSchema.methods.toJSON = function () {
     const userObject = this.toObject();
 
@@ -80,6 +86,8 @@ userSchema.methods.toJSON = function () {
     return userObject;
 };
 
+/* A method that is attached to the userSchema. It is a method that is not attached to an instance of a
+model. It is attached to the model itself. */
 userSchema.methods.generateAuthToken = async function (user) {
     const token = jwt.sign({ _id: this.id.toString() }, process.env.JWT_SECRET);
     this.tokens = this.tokens.concat({ token });
@@ -88,6 +96,8 @@ userSchema.methods.generateAuthToken = async function (user) {
 };
 
 //hash password
+/* This is a pre-hook. It is a method that is called before the model is saved. */
+
 userSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 8);
@@ -96,6 +106,8 @@ userSchema.pre("save", async function (next) {
 });
 
 //delete tasks when user is deleted
+/* Deleting all the tasks that are associated with the user that is being deleted. */
+
 userSchema.pre("remove", async function (next) {
     await Task.deleteMany({ user: this._id });
     // console.log(this);

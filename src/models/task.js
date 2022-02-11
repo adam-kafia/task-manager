@@ -1,3 +1,4 @@
+/* The above code is creating a schema for a Task model. */
 const mongoose = require("mongoose");
 
 const taskSchema = mongoose.Schema(

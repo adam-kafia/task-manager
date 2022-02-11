@@ -6,6 +6,12 @@ const User = require("../models/user");
 const router = express.Router();
 
 //Get all tasks
+/* A GET request to the `/tasks` endpoint. It is using the `auth` middleware to ensure that the user is
+authenticated. It is using the `req.user` object to get the user's `tasks` array. It is using the
+`req.query` object to get the `limit`, `skip`, and `completed` query parameters. It is using the
+`req.query.sortBy` to get the `sortBy` query parameter. It is using the `req.user.populate()` method
+to populate the `tasks` array. It is using the `res.send()` method to send the populated `tasks`
+array to the client. */
 router.get("/tasks", auth, async (req, res) => {
     try {
         const match = {};
@@ -36,6 +42,7 @@ router.get("/tasks", auth, async (req, res) => {
 });
 
 //Get task by id
+/* Using the `req.params.id` object to get the `id` parameter from the URL. */
 router.get("/tasks/:id", auth, async (req, res) => {
     const id_ = req.params.id;
     try {
@@ -49,6 +56,7 @@ router.get("/tasks/:id", auth, async (req, res) => {
 });
 
 //Add task
+/* Creating a new task. */
 router.post("/tasks", auth, async (req, res) => {
     try {
         const task = new Task({
@@ -64,6 +72,8 @@ router.post("/tasks", auth, async (req, res) => {
 });
 
 //Update task
+/* Checking if the updatedFields array contains the requiredFields array. If it does, it will return a
+status of 400 and send a message. */
 router.patch("/tasks/:id", auth, async (req, res) => {
     const requiredFields = ["description", "completed"];
     const updatedFields = Object.keys(req.body);
@@ -84,6 +94,7 @@ router.patch("/tasks/:id", auth, async (req, res) => {
 });
 
 //Delete task
+/* Deleting a task. */
 router.delete("/tasks/:id", auth, async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({

@@ -1,3 +1,4 @@
+/* The above code is connecting to the database. */
 const mongoose = require("mongoose");
 
 const connectionUrl = process.env.CONNECTION_URL;

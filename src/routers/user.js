@@ -32,11 +32,15 @@ const upload = multer({
 // });
 
 //Get profile
+/* This is a middleware function that is called before the route is executed. It checks if the user is
+authenticated and if not, it sends a 401 response. */
 router.get("/users/me", auth, async (req, res) => {
     res.send(req.user);
 });
 
 //Update user
+/* A middleware function that is called before the route is executed. It checks if the user is
+authenticated and if not, it sends a 401 response. */
 router.patch("/users/me", auth, async (req, res) => {
     const requiredFields = ["name", "email", "age", "password"];
     const updatedFields = Object.keys(req.body);
@@ -59,6 +63,7 @@ router.patch("/users/me", auth, async (req, res) => {
 });
 
 //Delete user
+/* Deleting the user. */
 router.delete("/users/me", auth, async (req, res) => {
     try {
         // const user = await User.findByIdAndDelete(req.user._id);
@@ -73,6 +78,8 @@ router.delete("/users/me", auth, async (req, res) => {
 });
 
 //login
+/* A middleware function that is called before the route is executed. It checks if the user is
+authenticated and if not, it sends a 401 response. */
 router.post("/users/login", async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
@@ -84,6 +91,7 @@ router.post("/users/login", async (req, res) => {
 });
 
 //signup
+/* Creating a new user. */
 router.post("/users/signin", async (req, res) => {
     const user = new User(req.body);
     try {
@@ -97,6 +105,8 @@ router.post("/users/signin", async (req, res) => {
 });
 
 //logout
+/* This is a middleware function that is called before the route is executed. It checks if the user is
+authenticated and if not, it sends a 401 response. */
 router.post("/users/logout", auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
@@ -110,6 +120,7 @@ router.post("/users/logout", auth, async (req, res) => {
 });
 
 //logout all
+/* This route is used to logout all sessions for a user. */
 router.post("/users/logoutAll", auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
@@ -142,6 +153,7 @@ router.post(
 );
 
 //delete an avatar
+/* This route is used to delete the avatar of the user. */
 router.delete("/users/me/avatar", auth, async (req, res) => {
     try {
         req.user.avatar = undefined;
@@ -153,6 +165,7 @@ router.delete("/users/me/avatar", auth, async (req, res) => {
 });
 
 //Getting avatar by user id
+/* This route is used to get the avatar of a user by id. */
 router.get("/users/:id/avatar", async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
